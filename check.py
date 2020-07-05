@@ -1,6 +1,7 @@
 import numpy as np
 from keras.models import load_model
 import cv2
+import matplotlib.pyplot as plt
 
 
 model = load_model("Model.h5")
@@ -14,15 +15,18 @@ labels = ["No Mask", "Mask"]
 while True:
     ret, frame = cam.read()
 
-    
+    frame1 = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+
     faces = face.detectMultiScale(frame, 1.3,5)
     
     for x, y, w, h in faces:
         
         face_img = frame[y:y+w, x:x+w]
-        smallFrame = cv2.resize(face_img, (150, 150))
+        smallFrame = cv2.resize(frame1, (150, 150))
         smallFrameNormalised = smallFrame / 255.0
         input = np.reshape(smallFrameNormalised, (1, 150, 150, 3))
+
+        
 
         prediction = model.predict(input)
 
@@ -37,6 +41,10 @@ while True:
             cv2.putText(frame, labels[0], (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
         
         print(prediction)
+
+    # plt.imshow(np.reshape(input, (150, 150, 3)))
+    # plt.show()
+    # break
 
     cv2.imshow("Video", frame)
 
