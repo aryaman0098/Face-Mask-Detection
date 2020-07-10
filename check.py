@@ -4,7 +4,8 @@ import cv2
 #import matplotlib.pyplot as plt
 
 
-model = load_model("Model.h5")#Loading the CNN model
+model1 = load_model("Model1.h5")#Loading the first CNN model
+model2 = load_model("Model2.h5")#Loading the second CNN model
 
 face = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")#Loading the harcascade classfier for face detecction
 
@@ -26,23 +27,24 @@ while True:
         smallFrameNormalised = smallFrame / 255.0
         input = np.reshape(smallFrameNormalised, (1, 150, 150, 3))
 
-        prediction = model.predict(input)#Predicting the outcome using the pretrained CNN
+        ensemble1 = model1.predict(input)#Predicting the outcome using the pretrained CNN model1
+        ensemble2 = model2.predict(input)#Predicting the outcome using the pretrained CNN model2
 
-        label = np.argmax(prediction, axis = 1)[0]
+        prediction = [(ensemble1[0][0] + ensemble2[0][0])/2.0, (ensemble1[0][1] + ensemble2[0][1])/2.0] #Taking the mean of both the predictions
 
-        if prediction[0][0] < prediction[0][1]:
-            prob = str(round(prediction[0][1] * 100, 2))
+        if prediction[0] < prediction[1]:
+            prob = str(round(prediction[1] * 100, 2))
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)#Bounding box to display the outcome
             cv2.rectangle(frame, (x, y - 40), (x + w, y), (0, 255, 0), -1)
             cv2.putText(frame, labels[1] + " " +prob, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, .90, (255, 255, 255), 2)
         
-        elif prediction[0][0] > prediction[0][1]:
-            prob = str(round(prediction[0][0] * 100, 2))
+        elif prediction[0] > prediction[1]:
+            prob = str(round(prediction[0] * 100, 2))
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)#Bounding box to display the outcome
             cv2.rectangle(frame, (x, y - 40), (x + w, y), (0, 0, 255), -1)
             cv2.putText(frame, labels[0] + " " +prob, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, .90, (255, 255, 255), 2)
         
-        #print(prediction)
+        print(prediction)
 
     # plt.imshow(np.reshape(input, (150, 150, 3)))
     # plt.show()
