@@ -35,14 +35,14 @@ while True:
         if prediction[0][0] < prediction[0][1]:
             prob = str(round(prediction[0][1] * 100, 2))
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)#Bounding box to display the outcome
-            cv2.rectangle(frame, (x, y - 40), (x + w, y), (0, 255, 0), -1)
-            cv2.putText(frame, labels[1] + " " +prob, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, .90, (255, 255, 255), 2)
+            cv2.rectangle(frame, (x, y - 35), (x + w, y), (0, 255, 0), -1)
+            cv2.putText(frame, labels[1] + " " +prob, (x, y-2), cv2.FONT_HERSHEY_SIMPLEX, .70, (255, 255, 255), 2)
         
         elif prediction[0][0] > prediction[0][1]:
             prob = str(round(prediction[0][0] * 100, 2))
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)#Bounding box to display the outcome
-            cv2.rectangle(frame, (x, y - 40), (x + w, y), (0, 0, 255), -1)
-            cv2.putText(frame, labels[0] + " " +prob, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, .90, (255, 255, 255), 2)
+            cv2.rectangle(frame, (x, y - 35), (x + w, y), (0, 0, 255), -1)
+            cv2.putText(frame, labels[0] + " " +prob, (x, y-2), cv2.FONT_HERSHEY_SIMPLEX, .70, (255, 255, 255), 2)
         
         print(prediction)
         #out.write(frame) #Uncomment this line if you want to save the recording of the web cam
