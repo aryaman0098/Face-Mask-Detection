@@ -1,0 +1,4 @@
+matplotlib
+keras
+opencv-python
+sklearn
