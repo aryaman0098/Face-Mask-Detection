@@ -24,6 +24,8 @@ Then to run the project, run the command:
 python run.py
 ```
 
+To quit the application, click 'Q' key from the keyboard.
+
 ***
 
 ## Sample output
